@@ -39,7 +39,7 @@ type
 
     procedure Check;
     function ConfirmOldFiles: Boolean;
-    procedure Download(const URL: string);
+    procedure Download(const URL, aNewVersion: string);
     procedure Log(const A: string; bBold: Boolean = True; Color: TColor = clBlack);
     procedure GetOldFiles;
     procedure DeleteOldFiles;
@@ -128,7 +128,10 @@ begin
       end);
 
     if Confirm and ConfirmOldFiles then
-      Download(tag_zip);
+    begin
+      Download(tag_zip,tag_version);
+    end;
+
 
   end else
     Log('Your version is already updated.', True, clGreen);
@@ -212,7 +215,7 @@ begin
   end;
 end;
 
-procedure TThCheck.Download(const URL: string);
+procedure TThCheck.Download(const URL,aNewVersion: string);
 var
   Dw: TDownLoadURL;
   TmpFile: string;
@@ -255,7 +258,7 @@ begin
   finally
     Z.Free;
   end;
-
+  G_NewVersion := aNewVersion;
   Log('Reloading component info...');
   Synchronize(Frm.LoadDefinitions); //reaload definitions
 

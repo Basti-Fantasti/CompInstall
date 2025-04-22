@@ -2,9 +2,9 @@ unit UDefinitions;
 
 interface
 
-uses System.Generics.Collections, System.Classes;
+uses System.Generics.Collections, System.Classes, system.IOUtils;
 
-const DEFINITIONS_VERSION = 2; //current definitions template
+const DEFINITIONS_VERSION = 3; //current definitions template
 
 type
   TPackage = class
@@ -29,9 +29,9 @@ type
     AddLibrary: Boolean;
     OutputPath: string;
     Packages: TPackages;
-
     GitHubRepository: string;
-
+    AutoUpdateIniFile : boolean;
+    UpdatedVersion : string;
     procedure LoadIniFile(const aFile: string);
 
     function HasAny64bit: Boolean;
@@ -42,7 +42,7 @@ type
 
 implementation
 
-uses System.IniFiles, System.SysUtils;
+uses System.IniFiles, System.SysUtils, uCommon;
 
 function PVToEnter(const A: string): string;
 begin
@@ -80,6 +80,7 @@ begin
 
     AddLibrary := Ini.ReadBool('General', 'AddLibrary', False);
     OutputPath := Ini.ReadString('General', 'OutputPath', '');
+    AutoUpdateIniFile := Ini.ReadInteger('General', 'AutoUpdateIniFile', 0) <> 0;
 
     S := TStringList.Create;
     try
@@ -117,11 +118,26 @@ end;
 constructor TDefinitions.Create;
 begin
   inherited;
+  UpdatedVersion := '';
   Packages := TPackages.Create;
 end;
 
 destructor TDefinitions.Destroy;
+var
+  ini : Tinifile;
 begin
+  if AutoUpdateIniFile and (UpdatedVersion <> '') then
+  begin
+    if (CompVersion <> UpdatedVersion) then
+    begin
+      ini := Tinifile.Create(tpath.combine(TPath.GetAppPath, INI_FILE_NAME));
+      try
+        ini.WriteString('General', 'Version', UpdatedVersion);
+      finally
+        ini.free;
+      end;
+    end;
+  end;
   Packages.Free;
   inherited;
 end;

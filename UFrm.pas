@@ -13,7 +13,7 @@ unit UFrm;
 interface
 
 uses Vcl.Forms, Vcl.ExtCtrls, Vcl.StdCtrls, Vcl.ComCtrls, Vcl.Buttons,
-  Vcl.Controls, System.Classes,
+  Vcl.Controls, System.Classes, System.IOUtils,
   //
   Vcl.Graphics, UDefinitions;
 
@@ -44,13 +44,14 @@ type
     DefLoaded: Boolean;
   public
     procedure LoadDefinitions;
-
+    procedure SetNewPackageVersion;
     procedure SetButtons(bEnabled: Boolean);
     procedure Log(const A: string; bBold: Boolean = True; Color: TColor = clBlack);
   end;
 
 var
   Frm: TFrm;
+  G_NewVersion : string;
 
 implementation
 
@@ -80,13 +81,21 @@ end;
 
 procedure TFrm.LoadDefinitions;
 begin
+  if G_NewVersion <> '' then
+  begin
+    if Assigned(D) then
+    begin
+      Log('Write Updated Component Version to INI File...');
+      SetNewPackageVersion;
+    end;
+  end;
   if Assigned(D) then D.Free;
 
   DefLoaded := False;
 
   D := TDefinitions.Create;
   try
-    D.LoadIniFile(AppDir+INI_FILE_NAME);
+    D.LoadIniFile(TPath.Combine(TPath.GetAppPath, INI_FILE_NAME));
 
     EdCompName.Text := D.CompName;
     EdCompVersion.Text := D.CompVersion;
@@ -107,7 +116,7 @@ begin
   ReportMemoryLeaksOnShutdown := True;
 
   AppDir := ExtractFilePath(Application.ExeName);
-
+  G_NewVersion := '';
   LoadDefinitions;
 end;
 
@@ -171,6 +180,18 @@ procedure TFrm.SetButtons(bEnabled: Boolean);
 begin
   BtnInstall.Enabled := bEnabled;
   BtnExit.Enabled := bEnabled;
+end;
+
+procedure TFrm.SetNewPackageVersion;
+begin
+  if D.AutoUpdateIniFile then
+  begin
+    if D.CompVersion <> G_NewVersion then
+    begin
+      D.UpdatedVersion := G_NewVersion;
+      G_NewVersion := '';
+    end;
+  end;
 end;
 
 end.

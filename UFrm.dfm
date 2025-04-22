@@ -340,7 +340,13 @@ object Frm: TFrm
     Width = 841
     Height = 410
     TabStop = False
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Segoe UI'
+    Font.Style = []
     HideScrollBars = False
+    ParentFont = False
     ReadOnly = True
     ScrollBars = ssVertical
     TabOrder = 5
