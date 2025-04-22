@@ -43,7 +43,7 @@ object Frm: TFrm
     Top = 16
     Width = 123
     Height = 13
-    Caption = 'Component Installer 2.6'
+    Caption = 'Component Installer 2.7'
     Font.Charset = ANSI_CHARSET
     Font.Color = clGreen
     Font.Height = -11
@@ -352,13 +352,13 @@ object Frm: TFrm
     TabOrder = 5
   end
   object LbDigaoDalpiaz: TLinkLabel
-    Left = 774
-    Top = 40
-    Width = 76
+    Left = 707
+    Top = 58
+    Width = 142
     Height = 17
     Caption = 
-      '<a href="https://github.com/digao-dalpiaz/CompInstall">Dig'#227'o Dal' +
-      'piaz</a>'
+      '<a href="https://github.com/digao-dalpiaz/CompInstall">Forked fr' +
+      'om Dig'#227'o Dalpiaz</a>'
     TabOrder = 2
     OnLinkClick = LbDigaoDalpiazLinkClick
   end
@@ -371,5 +371,16 @@ object Frm: TFrm
     Color = clBtnFace
     ReadOnly = True
     TabOrder = 1
+  end
+  object lnklbl1: TLinkLabel
+    Left = 763
+    Top = 35
+    Width = 89
+    Height = 17
+    Caption = 
+      '<a href="https://github.com/Basti-Fantasti/CompInstall">Modded V' +
+      'ersion</a>'
+    TabOrder = 8
+    OnLinkClick = LbDigaoDalpiazLinkClick
   end
 end

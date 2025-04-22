@@ -32,6 +32,7 @@ type
     LbDigaoDalpiaz: TLinkLabel;
     LbComponentVersion: TLabel;
     EdCompVersion: TEdit;
+    lnklbl1: TLinkLabel;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure BtnExitClick(Sender: TObject);

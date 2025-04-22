@@ -128,27 +128,44 @@ begin
       CompilePackage(P, aBat, 'Win64');
 
     if P.Install then
-      RegisterBPL(P.Name);
+    begin
+      if P.FOptRegisterName <> '' then
+      begin
+        Log('Register component using alternate Package name: ' + P.FOptRegisterName);
+        RegisterBPL(P.FOptRegisterName);
+      end
+      else
+      begin
+        RegisterBPL(P.Name);
+      end;
+    end;
+
   end;
 end;
 
 procedure TProcess.CompilePackage(P: TPackage; const aBat, aPlatform: string);
 var
   C: TCmdExecBuffer;
-  aPath, aFile: string;
+  aPath, aFile,
+  aBuildConfig: string;
 begin
   Log('Compile package '+P.Name+' ('+aPlatform+')');
 
   aPath := TPath.Combine(AppDir, P.Path); //if P.Path blank, Combine ignores automatically
   aFile := TPath.Combine(aPath, P.Name);
-
+  aBuildConfig := 'Release';
+  if P.FOptBuildConfig.ToLowerInvariant <> 'release' then
+  begin
+    aBuildConfig := P.FOptBuildConfig;
+  end;
   C := TCmdExecBuffer.Create;
   try
     C.OnLine := OnLine;
 
     C.CommandLine :=
-      Format('""%s" & "%s" "%s.dproj" /t:build /p:config=Release /p:platform=%s"',
-      [aBat, MSBuildExe, aFile, aPlatform]);
+      Format('""%s" & "%s" "%s.dproj" /t:build /p:config=%s /p:platform=%s"',
+      [aBat, MSBuildExe, aFile, aBuildConfig, aPlatform]);
+
 
     C.WorkDir := aPath;
 

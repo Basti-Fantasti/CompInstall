@@ -14,7 +14,8 @@ type
     Allow64bit: Boolean;
     PublishFiles: TStringList;
     Install: Boolean;
-
+    FOptRegisterName : string;
+    FOptBuildConfig : string;
     constructor Create;
     destructor Destroy; override;
   end;
@@ -100,6 +101,8 @@ begin
         P.Allow64bit := Ini.ReadBool(Sec, 'Allow64bit', False);
         P.PublishFiles.Text := PVToEnter( Ini.ReadString(Sec, 'PublishFiles', '') );
         P.Install := Ini.ReadBool(Sec, 'Install', False);
+        p.FOptBuildConfig := ini.ReadString(Sec,'BuildConfig', 'Release');
+        p.FOptRegisterName := ini.ReadString(Sec,'RegisterName', '');
       end;
 
     finally

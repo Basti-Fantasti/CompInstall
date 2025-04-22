@@ -18,6 +18,9 @@
   - New ini property `General`-`AutoUpdateIniFile`
   - Raised IniVersion to **3**
   - Implemented Automatic Update of INI File after GitHub Download
+  - Added `BuildConfig` in Package config to switch between Release/Debug or else
+  - Added `RegisterName` in Package to set a different bpl file name than the package name
+  - Updated General and Package Section in below documentation accordingly
 
 - 02/20/2024 (Version 2.6)
 
@@ -134,6 +137,11 @@ If any package has this option enabled, it will be display a checkbox allowing i
 `PublishFiles` (optional) = It's a list splitted by ";" with all files you want to copy into release folders (usually DFM form files used at runtime and resource files).
 
 `Install` (optional) = 0 or 1. When 1, this package will be installed into Delphi IDE. You need to set this option for design-time packages when you want to register components into Delphi IDE.
+
+`BuildConfig` (optional, default **Release**) = Set to Release or Debug or any other existing BuildCOnfig as needed
+
+`RegisterName`(optional) = Set a different RegisterName then the Package name. In some cases the package has a generic name and the bpl file includes a version string. E.g. MyPackage.dproj and MyPackage180.bpl
+
 
 > Note: The app compiles your component using always **Release** target.
 
