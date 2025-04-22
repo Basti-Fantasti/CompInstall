@@ -14,6 +14,11 @@
 
 ## What's New
 
+- 04/22/2025 (Version 2.7)
+  - New ini property `General`-`AutoUpdateIniFile`
+  - Raised IniVersion to **3**
+  - Implemented Automatic Update of INI File after GitHub Download
+
 - 02/20/2024 (Version 2.6)
 
   - Delphi 12 support.
@@ -110,6 +115,9 @@ Then put the **CompInstall.exe** and **CompInstall.ini** into your component pac
 `AddLibrary` (optional) = 0 or 1. When 1, the path of release folders of component will be registered into Delphi library path.
 
 `OutputPath` (optional) = Relative folder where compiled files are stored (must be the same configured in package settings). You can use `{PLATFORM}` and `{CONFIG}` variables. Default value is: `{PLATFORM}\{CONFIG}` (By now, {CONFIG} is always "Release").
+
+`AutoUpdateIniFile` (optional) = 0 or 1. When 1, the new version tag of the downloaded version is updated in the ini file. This prevents re-downloading the same updated version on every start.
+
 
 **Package section**
 
