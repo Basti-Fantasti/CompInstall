@@ -141,7 +141,7 @@ If any package has this option enabled, it will be display a checkbox allowing i
 
 `Install` (optional) = 0 or 1. When 1, this package will be installed into Delphi IDE. You need to set this option for design-time packages when you want to register components into Delphi IDE.
 
-`BuildConfig` (optional, default **Release**) = Set to Release or Debug or any other existing BuildCOnfig as needed
+`BuildConfig` (optional, default **Release**) = Set to Release or Debug or any other existing BuildConfig as needed
 
 `RegisterName`(optional) = Set a different RegisterName then the Package name. In some cases the package has a generic name and the bpl file includes a version string. E.g. MyPackage.dproj and MyPackage180.bpl
 
