@@ -147,6 +147,7 @@ end;
 procedure TFrm.BtnInstallClick(Sender: TObject);
 var
   P: TProcess;
+  LDelphiVersion : string;
 begin
   if not DefLoaded then
     raise Exception.Create('Component definitions are not loaded');
@@ -169,6 +170,15 @@ begin
 
   SetButtons(False);
   Refresh;
+  // Here we know about the selected Delphi Version
+  //LDelphiVersion := EdDV.Items[EdDV.ItemIndex]; // Long Delphi Name, not Tag from INI File
+  //LDelphiVersion := TDelphiVersionItem(EdDV.Items.Objects[EdDV.ItemIndex]).InternalNumber;  // Version 23.0 for Delphi 12
+  LDelphiVersion := TDelphiVersionItem(EdDV.Items.Objects[EdDV.ItemIndex]).Iniver;
+
+  // Reload Packages to get version specific sections
+
+  Log('Reload Packages to get Delphi Version specific Settings with Delphi suffix: ' + LDelphiVersion);
+  D.ReloadPackages(TPath.Combine(TPath.GetAppPath,INI_FILE_NAME),LDelphiVersion);
 
   P := TProcess.Create(D,
     TDelphiVersionItem(EdDV.Items.Objects[EdDV.ItemIndex]).InternalNumber,

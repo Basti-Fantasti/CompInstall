@@ -8,6 +8,7 @@ type
   TDelphiVersionItem = class
   public
     InternalNumber: string;
+    IniVer : string;
   end;
 
   TDelphiVersionComboLoader = class
@@ -34,6 +35,7 @@ var
     begin
       Item := TDelphiVersionItem.Create;
       Item.InternalNumber := Key;
+      Item.IniVer := IniVer;
       Combo.Items.AddObject(Text, Item);
     end;
   end;

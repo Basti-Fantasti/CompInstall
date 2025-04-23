@@ -43,7 +43,7 @@ object Frm: TFrm
     Top = 16
     Width = 123
     Height = 13
-    Caption = 'Component Installer 2.7'
+    Caption = 'Component Installer 2.8'
     Font.Charset = ANSI_CHARSET
     Font.Color = clGreen
     Font.Height = -11
@@ -363,7 +363,7 @@ object Frm: TFrm
     OnLinkClick = LbDigaoDalpiazLinkClick
   end
   object EdCompVersion: TEdit
-    Left = 528
+    Left = 527
     Top = 32
     Width = 161
     Height = 21

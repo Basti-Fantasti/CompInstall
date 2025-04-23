@@ -34,6 +34,8 @@ type
     AutoUpdateIniFile : boolean;
     UpdatedVersion : string;
     procedure LoadIniFile(const aFile: string);
+    procedure ReloadPackages(const aFile, aDelphiVersion : string);
+
 
     function HasAny64bit: Boolean;
 
@@ -96,6 +98,66 @@ begin
 
         Sec := 'P_'+A;
 
+        P.Name := A;
+        P.Path := Ini.ReadString(Sec, 'Path', '');
+        P.Allow64bit := Ini.ReadBool(Sec, 'Allow64bit', False);
+        P.PublishFiles.Text := PVToEnter( Ini.ReadString(Sec, 'PublishFiles', '') );
+        P.Install := Ini.ReadBool(Sec, 'Install', False);
+        p.FOptBuildConfig := ini.ReadString(Sec,'BuildConfig', 'Release');
+        p.FOptRegisterName := ini.ReadString(Sec,'RegisterName', '');
+      end;
+
+    finally
+      S.Free;
+    end;
+
+    GitHubRepository := Ini.ReadString('GitHub', 'Repository', '');
+
+  finally
+    Ini.Free;
+  end;
+end;
+
+procedure TDefinitions.ReloadPackages(const aFile, aDelphiVersion: string);
+var
+  Ini: TIniFile;
+  A, Sec,
+  LVerSec: string;
+  S: TStringList;
+  P: TPackage;
+  LIter : integer;
+begin
+  if not FileExists(aFile) then
+    raise Exception.Create('Ini file not found');
+
+  //Reset Packages
+  if Assigned(Packages) then
+  begin
+    Packages.Clear;
+    Packages.free;
+  end;
+  self.Packages := TPackages.Create;
+
+  Ini := TIniFile.Create(aFile);
+  try
+    S := TStringList.Create;
+    try
+      S.Text := PVToEnter( Ini.ReadString('General', 'Packages', '') );
+      if S.Count=0 then
+        raise Exception.Create('No package found in the ini file');
+
+      for A in S do
+      begin
+        P := TPackage.Create;
+        Packages.Add(P);
+
+        Sec := 'P_'+A;
+        LVerSec := 'P_'+A+'_'+aDelphiVersion;
+
+        if ini.SectionExists(LVersec) then
+        begin
+          Sec := LVersec;
+        end;
         P.Name := A;
         P.Path := Ini.ReadString(Sec, 'Path', '');
         P.Allow64bit := Ini.ReadBool(Sec, 'Allow64bit', False);

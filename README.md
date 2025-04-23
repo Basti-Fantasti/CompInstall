@@ -13,6 +13,9 @@
 - [CompInstall.ini structure](#compinstallini-structure)
 
 ## What's New
+- 04/23/2025 (Version 2.8)
+  - Implemented Ini-File Section handling based on the Delphi Version, so now it's possible to have separate sections for different Delphi versions. Check the [Example 2](#Example-2) below for the implementation of this feature
+
 
 - 04/22/2025 (Version 2.7)
   - New ini property `General`-`AutoUpdateIniFile`
@@ -143,13 +146,11 @@ If any package has this option enabled, it will be display a checkbox allowing i
 `RegisterName`(optional) = Set a different RegisterName then the Package name. In some cases the package has a generic name and the bpl file includes a version string. E.g. MyPackage.dproj and MyPackage180.bpl
 
 
-> Note: The app compiles your component using always **Release** target.
-
 **`[GitHub]` section**
 
 `Repository` (optional) = Allows you to specify a GitHub repository (syntax: `GitHub account`/`Repository name`), so when app starts, it will check for component update using GitHub API, reading the latest existing release and comparing its version with current version. If the versions don't match, a dialog will be displayed asking if you want to auto-update files.
 
-### Example
+### Example 1
 
 In this example, there are two Delphi packages (DamPackage and DamDesignPackage). The design-time package (DamDesignPackage) is configured to install into Delphi IDE. The runtime package (DamPackage) is configured to copy dfm form file and resource file to release folder.
 
@@ -172,6 +173,51 @@ PublishFiles=DamDialog.dfm;Resources\Dam_Resource.res
 
 [P_DamDesignPackage]
 Install=1
+```
+
+
+### Example 2
+
+
+Sample Packages using the `RegisterName` Property to distinguish between different Delphi Versions
+
+> It's a stripped down config just for documentation purpose.
+
+```
+[Template]
+IniVersion=3
+
+[General]
+Name=Zeos Component Sample
+Version=8.0-patches
+DelphiVersions=XE8;10.4;11;12
+Packages=ZCore;ZComponentDesign
+AddLibrary=1
+OutputPath=Library\{PLATFORM}\{CONFIG}
+AutoUpdateIniFile`=1
+
+# Runtime Package
+[P_ZCore]
+Path=Packages\Delphi12
+Allow64bit=1
+Install=0
+
+# Designtime Package for Delphi 11
+[P_ZComponentDesign_11]
+Path=Packages\Delphi11
+# Compile for 32 and 64 bit
+Allow64bit=0
+Install=1
+BuildConfig=Debug
+RegisterName=ZComponentDesign270
+
+[P_ZComponentDesign_12]
+Path=Packages\Delphi12
+# Compile for 32 and 64 bit
+Allow64bit=0
+Install=1
+BuildConfig=Debug
+RegisterName=ZComponentDesign280
 ```
 
 **Check my Delphi components here at GitHub and find CompInstall.ini file to see others usage examples.**
